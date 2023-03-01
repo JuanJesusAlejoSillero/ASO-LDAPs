@@ -9,6 +9,7 @@
     - [**Configuración de LDAP**](#configuración-de-ldap)
     - [**Conexión a LDAPs desde Delta**](#conexión-a-ldaps-desde-delta)
     - [**Conexión a LDAPs desde Bravo**](#conexión-a-ldaps-desde-bravo)
+    - [**Uso de ldaps:// y ldap:// en Alfa**](#uso-de-ldaps-y-ldap-en-alfa)
 
 ---
 
@@ -315,6 +316,34 @@ ls -l LDAP3.txt
 ![21](img/21.png)
 
 Podemos observar como funciona correctamente y se ve el fichero que hemos creado desde *Delta* y su contenido.
+
+### **Uso de ldaps:// y ldap:// en Alfa**
+
+Tras haber comprobado que todo funciona correctamente con *ldaps://*, procedo a configurar *Alfa* para que pueda escuchar en *ldap://* y *ldaps://* de nuevo. Para ello, modifico la variable *SLAPD_SERVICES* en el fichero */etc/default/slapd* de *Alfa*:
+
+```bash
+nano -cl /etc/default/slapd
+```
+
+![22](img/22.png)
+
+Y reinicio el servicio:
+
+```bash
+systemctl restart slapd
+```
+
+![23](img/23.png)
+
+Observamos como ahora *Alfa* escucha de nuevo en *ldap://* y *ldaps://*.
+
+Si me conecto a *Delta* y hago una consulta a *LDAP* (sin s), veré que funciona correctamente:
+
+```bash
+ldapsearch -x -b "dc=juanjesus,dc=gonzalonazareno,dc=org" -H ldap://alfa.juanjesus.gonzalonazareno.org
+```
+
+![24](img/24.png)
 
 ---
 
